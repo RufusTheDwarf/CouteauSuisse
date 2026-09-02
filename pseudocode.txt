@@ -1,0 +1,5 @@
+
+FONCTION reperer les letres ou espaces
+    si lettre
+
+    sinon
