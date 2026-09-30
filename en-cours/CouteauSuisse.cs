@@ -12,38 +12,62 @@ namespace CouteauSuisse
             /// Date : 31/08/2026
             /// Description : Traducteur de code morse en C# dans la console
 
-            Menu();                                     // Affiche le menu
+            bool restart = false;
 
-            byte choice = VerifyChoice();               // Vérifie que le choix est valide
-
-            Console.Clear();
-
-            switch (choice)
+            do
             {
-                case 1:
+                Menu();                                     // Affiche le menu
+
+                byte choice = VerifyChoice();               // Vérifie que le choix est valide
+
+                Console.Clear();
+
+                switch (choice)
                 {
-                    var morseCode = CreateDictionary();                     // crée le dictionnaire de code Morse
-                    string text = CatchInput();                             // Lecture du input
-                    bool valid = VerifyChar(text, morseCode);               // Vérifie que tous les caractères sont supportés
+                    case 1:
+                        {
+                            var morseCode = CreateDictionary();                     // crée le dictionnaire de code Morse
+                            string text = CatchInput();                             // Lecture du input
+                            bool valid = VerifyChar(text, morseCode);               // Vérifie que tous les caractères sont supportés
 
-                    if (!valid)
-                    {
-                        text = ForceTrue(text, morseCode, valid);           // Forcer valide si c'est pas valide
-                    }
+                            if (!valid)
+                            {
+                                text = ForceTrue(text, morseCode, valid);           // Forcer valide si c'est pas valide
+                            }
 
-                    string morse = ConvertToMorse(text, morseCode);         // Convertit le texte en code Morse
-                    DisplayMorse(morse);                                    // Affiche le code Morse
-                    ExecuteSound(morse);                                    // Exécute le son du code Morse
-                    break;
+                            string morse = ConvertToMorse(text, morseCode);         // Convertit le texte en code Morse
+                            DisplayMorse(morse);                                    // Affiche le code Morse
+                            ExecuteSound(morse);                                    // Exécute le son du code Morse
+                            break;
+                        }
+
+                    case 2:
+                        {
+                            byte baseChoice = BaseMenu();                           //affiche le menu des bases
+
+                            baseChoice = ForceBaseChoice(baseChoice);               //verrifie et éaisse passer si tout est bon
+
+                            string input = CatchBaseInput();                        //prend ce que l'utilisateur à écrit
+                            string result = ConvertInput(baseChoice, input);        //convetit dans une autre base
+                            DisplayOutput(result);                                  //affiche la solution
+                            break;
+                        }
+
+                    case 3:
+                        {
+                            Console.WriteLine(" Cette fonctionnalité n'est pas encore disponible.");
+                            break;
+                        }
                 }
 
-                case 2:
-                case 3:
-                    Console.WriteLine("Cette fonctionnalité n'est pas encore disponible.");
-                    break;
-            }
+                restart = ChoiceRestart();
 
-            choicerestart();
+                if (restart)
+                {
+                    Console.Clear();
+                }
+
+            } while (restart == true);
         }
 
         //#########################################################################################################################################################################
@@ -59,9 +83,9 @@ namespace CouteauSuisse
             Console.WriteLine(" ╚═════════════════════════════════════╝ ");
             Console.WriteLine(" === Couteau Suisse – Utilitaires ===");
             Console.WriteLine(" 1. Convertir du texte en code Morse");
-            Console.WriteLine(" 2. (à venir)");
+            Console.WriteLine(" 2. Convertir des bases (Décimal, Binaire, Octal)");
             Console.WriteLine(" 3. (à venir)");
-            Console.Write    (" Veuillez choisir une option : ");
+            Console.Write(" Veuillez choisir une option : ");
         }
 
         //Vérifie que le choix est valide
@@ -103,8 +127,8 @@ namespace CouteauSuisse
         //Lecture du input
         static string CatchInput()
         {
-            Console.WriteLine("=== Convertisseur de texte en code Morse ===");
-            Console.Write("Entrez un mot ou une phrase (chiffres 0-9 et lettres sans accents) : ");
+            Console.WriteLine(" === Convertisseur de texte en code Morse ===");
+            Console.Write(" Entrez un mot ou une phrase (chiffres 0-9 et lettres sans accents) : ");
 
             string text = Console.ReadLine()?.ToUpper() ?? "";
 
@@ -132,7 +156,7 @@ namespace CouteauSuisse
         {
             while (!valid)
             {
-                Console.Write("Vous avez entré un caractère non supporté. Veuillez réessayer : ");
+                Console.Write(" Vous avez entré un caractère non supporté. Veuillez réessayer : ");
                 text = Console.ReadLine()?.ToUpper() ?? "";
                 valid = VerifyChar(text, morseCode);
             }
@@ -164,7 +188,7 @@ namespace CouteauSuisse
         //Afficher le code Morse
         static void DisplayMorse(string morse)
         {
-            Console.WriteLine($"Résultat en Morse : {morse}");
+            Console.WriteLine($" Résultat en Morse : {morse}");
         }
 
         //Exécuter le son du code Morse
@@ -196,26 +220,115 @@ namespace CouteauSuisse
         //#########################################################################################################################################################################
         //Partie convertisseur de bases
 
+        // Menu de base
+        static byte BaseMenu()
+        {
+            Console.WriteLine(" === Convertisseur de bases ===");
+            Console.WriteLine(" 1. Décimal > Binaire");
+            Console.WriteLine(" 2. Binaire > Décimal");
+            Console.WriteLine(" 3. Binaire > Octal");
+            Console.WriteLine(" 4. Octal > Binaire");
+            Console.Write(" Veuillez entrer votre choix : ");
+
+            byte.TryParse(Console.ReadLine(), out byte BaseChoice);
+
+            return BaseChoice;
+        }
+
+        // Vérifie que le choix est valide
+        static bool VerifyBaseChoice(byte baseChoice)
+        {
+            return baseChoice >= 1 && baseChoice <= 4;
+        }
+
+        // Force l'utilisateur à entrer un choix valide
+        static byte ForceBaseChoice(byte baseChoice)
+        {
+            while (!VerifyBaseChoice(baseChoice))
+            {
+                Console.Write(" Choix invalide. Veuillez réessayer : ");
+                byte.TryParse(Console.ReadLine(), out baseChoice);
+            }
+
+            return baseChoice;
+        }
+
+        // Lecture du input
+        static string CatchBaseInput()
+        {
+            Console.Write(" Veuillez entrer un nombre : ");
+            return Console.ReadLine() ?? "";
+        }
+
+        // Décide quelle fonction appeler avec l'input
+        static string ConvertInput(byte baseChoice, string input)
+        {
+            switch (baseChoice)
+            {
+                case 1:
+                    return DecimalToBinary(input);
+                case 2:
+                    return BinaryToDecimal(input);
+                case 3:
+                    return BinaryToOctal(input);
+                case 4:
+                    return OctalToBinary(input);
+                default:
+                    return "";
+            }
+        }
+
+        // Fonctions qui font la conversion selon le choix
+        static string DecimalToBinary(string value)
+        {
+            int decimalNumber = int.Parse(value);
+            return Convert.ToString(decimalNumber, 2);
+        }
+
+        static string BinaryToDecimal(string value)
+        {
+            int decimalNumber = Convert.ToInt32(value, 2);
+            return decimalNumber.ToString();
+        }
+
+        static string BinaryToOctal(string value)
+        {
+            int decimalNumber = Convert.ToInt32(value, 2);
+            return Convert.ToString(decimalNumber, 8);
+        }
+
+        static string OctalToBinary(string value)
+        {
+            int decimalNumber = Convert.ToInt32(value, 8);
+            return Convert.ToString(decimalNumber, 2);
+        }
+
+        // Affiche le résultat de la conversion
+        static void DisplayOutput(string result)
+        {
+            Console.WriteLine($" Résultat : {result}");
+        }
+
         //#########################################################################################################################################################################
         //partie sténographie
 
         //#########################################################################################################################################################################
         //continuer ?
 
-        static void choicerestart()
+        static bool ChoiceRestart()
         {
             Console.Write(" Voulez-vous redémarrer ? [O]oui [N]non :");
-            string restart = Console.ReadLine()?.ToUpper() ?? "";
+            string confirm = Console.ReadLine()?.ToUpper() ?? "";
 
-            while (restart != "O" && restart != "N")
+            while (confirm != "O" && confirm != "N")
             {
-                Console.Write("Veuillez choisir entre [O] et [N] : ");
-                restart = Console.ReadLine()?.ToUpper() ?? "";
+                Console.Write(" Veuillez choisir entre [O] et [N] : ");
+                confirm = Console.ReadLine()?.ToUpper() ?? "";
             }
 
-            if (restart == "O")
+            if (confirm == "O")
             {
-                Menu();
+                return true;
             }
         }
     }
