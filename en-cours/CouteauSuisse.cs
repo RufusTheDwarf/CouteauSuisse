@@ -59,9 +59,7 @@ namespace CouteauSuisse
 
                     case ACTION_STENOGRAPHIE:
                         {
-                            cryptchoice = StenographyMenu();                                    //affiche le menu de la stéganographie
-
-                            cryptchoice = ForceStenographyChoice(cryptchoice);                  //verrifie et force l'utilisateur à choisir une option valide
+                            cryptchoice = StenographyMenu();                                    //affiche le menu de la stéganographie \\j'ai mis force true avec le menu de la stéganographie pour faire moins de fonctions
 
                             cryptinput = CatchStenographyInput();                               //prend ce que l'utilisateur à écrit
                             cryptconvert = ConvertStenographyInput(cryptchoice, cryptinput);    //convetit dans une autre base
@@ -323,7 +321,22 @@ namespace CouteauSuisse
         //#########################################################################################################################################################################
         //partie sténographie
 
+        static byte StenographyMenu()
+        {
+            Console.WriteLine(" === Stéganographie ===");
+            Console.WriteLine(" 1. Encoder (Cacher un message)");
+            Console.WriteLine(" 2. Décoder (Extraire un message caché)");
+            Console.Write(" Veuillez entrer votre choix : ");
 
+            byte.TryParse(Console.ReadLine(), out byte cryptchoice);
+            while (cryptchoice != 1 && cryptchoice != 2)
+            {
+                Console.Write(" Choix invalide. Veuillez réessayer : ");
+                byte.TryParse(Console.ReadLine(), out cryptchoice);
+            }
+
+            return cryptchoice;
+        }
 
         //#########################################################################################################################################################################
         //continuer ?
