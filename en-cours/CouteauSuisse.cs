@@ -5,9 +5,9 @@ namespace CouteauSuisse
 {
     internal class Program
     {
-        private const int ACTION_MORSE  = 1;
-        private const int ACTION_BASES  = 2;
-        private const int ACTION_STENOGRAPHIE  = 3;
+        private const int ACTION_MORSE = 1;
+        private const int ACTION_BASES = 2;
+        private const int ACTION_STENOGRAPHIE = 3;
 
         static void Main(string[] args)
         {
@@ -49,7 +49,7 @@ namespace CouteauSuisse
                         {
                             byte baseChoice = BaseMenu();                           //affiche le menu des bases
 
-                            baseChoice = ForceBaseChoice(baseChoice);               //verrifie et éaisse passer si tout est bon
+                            baseChoice = ForceBaseChoice(baseChoice);               //verrifie et laisse passer si tout est bon
 
                             string input = CatchBaseInput();                        //prend ce que l'utilisateur à écrit
                             string result = ConvertInput(baseChoice, input);        //convetit dans une autre base
@@ -59,11 +59,18 @@ namespace CouteauSuisse
 
                     case ACTION_STENOGRAPHIE:
                         {
-                            cryptchoice = StenographyMenu();                                    //affiche le menu de la stéganographie \\j'ai mis force true avec le menu de la stéganographie pour faire moins de fonctions
+                            byte cryptchoice = SteganographyMenu();                                     //affiche le menu de la stéganographie \\j'ai mis force true avec le menu de la stéganographie pour faire moins de fonctions
 
-                            cryptinput = CatchStenographyInput();                               //prend ce que l'utilisateur à écrit
-                            cryptconvert = ConvertStenographyInput(cryptchoice, cryptinput);    //convetit dans une autre base
-                            DisplayStenographyOutput(cryptconvert);                             //affiche la solution
+                            if (cryptchoice == 1)
+                            {
+                                string showresult = cryptinput();
+                            }
+                            else
+                            {
+                                string showresult = decrypttext();
+                            }
+                                
+                            DisplayStenographyOutput(showresult);                                     //affiche la solution et dis où le message à été enregistré.
 
                             break;
                         }
@@ -321,7 +328,7 @@ namespace CouteauSuisse
         //#########################################################################################################################################################################
         //partie sténographie
 
-        static byte StenographyMenu()
+        static byte SteganographyMenu()
         {
             Console.WriteLine(" === Stéganographie ===");
             Console.WriteLine(" 1. Encoder (Cacher un message)");
@@ -337,6 +344,22 @@ namespace CouteauSuisse
 
             return cryptchoice;
         }
+
+
+        static string cryptinput()
+        {
+
+        }
+
+       
+
+
+        static void DisplayStenographyOutput (string result)
+        {
+            Console.WriteLine("");
+        }
+
+
 
         //#########################################################################################################################################################################
         //continuer ?
