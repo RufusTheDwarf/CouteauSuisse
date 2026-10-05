@@ -5,6 +5,10 @@ namespace CouteauSuisse
 {
     internal class Program
     {
+        private const int ACTION_MORSE  = 1;
+        private const int ACTION_BASES  = 2;
+        private const int ACTION_STENOGRAPHIE  = 3;
+
         static void Main(string[] args)
         {
             /// ETML 
@@ -24,7 +28,7 @@ namespace CouteauSuisse
 
                 switch (choice)
                 {
-                    case 1:
+                    case ACTION_MORSE:
                         {
                             var morseCode = CreateDictionary();                     // crée le dictionnaire de code Morse
                             string text = CatchInput();                             // Lecture du input
@@ -41,7 +45,7 @@ namespace CouteauSuisse
                             break;
                         }
 
-                    case 2:
+                    case ACTION_BASES:
                         {
                             byte baseChoice = BaseMenu();                           //affiche le menu des bases
 
@@ -53,9 +57,11 @@ namespace CouteauSuisse
                             break;
                         }
 
-                    case 3:
+                    case ACTION_STENOGRAPHIE:
                         {
-                            Console.WriteLine(" Cette fonctionnalité n'est pas encore disponible.");
+                            
+
+
                             break;
                         }
                 }
@@ -312,6 +318,8 @@ namespace CouteauSuisse
         //#########################################################################################################################################################################
         //partie sténographie
 
+
+
         //#########################################################################################################################################################################
         //continuer ?
 
@@ -329,6 +337,10 @@ namespace CouteauSuisse
             if (confirm == "O")
             {
                 return true;
+            }
+            else
+            {
+                return false;
             }
         }
     }
