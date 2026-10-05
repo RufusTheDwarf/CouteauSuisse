@@ -63,9 +63,9 @@ namespace CouteauSuisse
 
                             if (cryptchoice == 1)
                             {
-                                string showresult = cryptinput();
+                                string showresult = cryptinput();                                       //affiche le menu de l'encodage et prend les inputs
                             }
-                            else
+                            else if (cryptchoice == 2)
                             {
                                 string showresult = decrypttext();
                             }
@@ -348,18 +348,25 @@ namespace CouteauSuisse
 
         static string cryptinput()
         {
-
+            Console.WriteLine(" === Encodage de message ===");
+            Console.Write(" Entrez le message à cacher : ");
+            string message = Console.ReadLine() ?? "";
+            Console.Write(" Entrez le chemin du fichier image dans lequel cacher le message : ");
+            string imagePath = Console.ReadLine() ?? "";
+            return message + "|" + imagePath;
         }
 
-       
-
+        static string decrypttext()
+        {
+            Console.WriteLine(" === Décodage de message ===");
+            Console.Write(" Entrez le chemin du fichier contenant le message caché : ");
+            return Console.ReadLine();
+        }
 
         static void DisplayStenographyOutput (string result)
         {
             Console.WriteLine("");
         }
-
-
 
         //#########################################################################################################################################################################
         //continuer ?
