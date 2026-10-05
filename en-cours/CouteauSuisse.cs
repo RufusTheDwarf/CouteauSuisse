@@ -59,13 +59,13 @@ namespace CouteauSuisse
 
                     case ACTION_STENOGRAPHIE:
                         {
-                            cryptchoice = StenographyMenu();                         //affiche le menu de la stéganographie
+                            cryptchoice = StenographyMenu();                                    //affiche le menu de la stéganographie
 
-                            cryptchoice = ForceStenographyChoice(cryptchoice);       //verrifie et force l'utilisateur à choisir une option valide
+                            cryptchoice = ForceStenographyChoice(cryptchoice);                  //verrifie et force l'utilisateur à choisir une option valide
 
-                            cryptinput = CatchStenographyInput();                             //prend ce que l'utilisateur à écrit
-                            cryptconvert
-
+                            cryptinput = CatchStenographyInput();                               //prend ce que l'utilisateur à écrit
+                            cryptconvert = ConvertStenographyInput(cryptchoice, cryptinput);    //convetit dans une autre base
+                            DisplayStenographyOutput(cryptconvert);                             //affiche la solution
 
                             break;
                         }
