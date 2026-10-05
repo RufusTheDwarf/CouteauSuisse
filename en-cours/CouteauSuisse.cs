@@ -59,7 +59,12 @@ namespace CouteauSuisse
 
                     case ACTION_STENOGRAPHIE:
                         {
-                            
+                            cryptchoice = StenographyMenu();                         //affiche le menu de la stéganographie
+
+                            cryptchoice = ForceStenographyChoice(cryptchoice);       //verrifie et force l'utilisateur à choisir une option valide
+
+                            cryptinput = CatchStenographyInput();                             //prend ce que l'utilisateur à écrit
+                            cryptconvert
 
 
                             break;
@@ -90,7 +95,7 @@ namespace CouteauSuisse
             Console.WriteLine(" === Couteau Suisse – Utilitaires ===");
             Console.WriteLine(" 1. Convertir du texte en code Morse");
             Console.WriteLine(" 2. Convertir des bases (Décimal, Binaire, Octal)");
-            Console.WriteLine(" 3. (à venir)");
+            Console.WriteLine(" 3. Stéganographie : encodage et décodage");
             Console.Write(" Veuillez choisir une option : ");
         }
 
